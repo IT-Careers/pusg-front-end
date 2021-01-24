@@ -18,6 +18,12 @@ const supportedCommands = {
             });
         },
         help: 'The currently invoked command - prints help for all commands.',
+    },
+    '-pew': {
+        invoke: () => {
+            app.config.sounds.pew.play();
+        },
+        help: 'Does a pew!',
     }
 };
 

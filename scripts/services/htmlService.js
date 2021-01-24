@@ -16,6 +16,10 @@ class HtmlService {
         this.templates = templates;
     }
 
+    clearElement(elementSelector) {
+        this.dom.querySelector(elementSelector).innerHTML = '';
+    }
+
     getTemplate(templateName) {
         return fetch(this.templates[templateName])
             .then(response => response.text());

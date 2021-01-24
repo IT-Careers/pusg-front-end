@@ -8,7 +8,8 @@ const handleRouting = () => {
             app.htmlService.getTemplate('home').then((template) => {
                 const compliedTemplate = app.htmlService.createElement(template);
 
-                app.htmlService.attachElement(compliedTemplate, 'body');
+                app.htmlService.clearElement('#app');
+                app.htmlService.attachElement(compliedTemplate, '#app');
 
                 app.Home.init();
             });
@@ -18,7 +19,8 @@ const handleRouting = () => {
             app.htmlService.getTemplate('game').then((template) => {
                 const compliedTemplate = app.htmlService.createElement(template);
 
-                app.htmlService.attachElement(compliedTemplate, 'body');
+                app.htmlService.clearElement('#app');
+                app.htmlService.attachElement(compliedTemplate, '#app');
 
                 app.Game.init();
             });
