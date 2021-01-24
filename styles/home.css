@@ -9,7 +9,9 @@
 }
 
 .history-messages {
+    height: 99%;
     font-family: 'Open Sans', sans-serif;
+    overflow: auto;
 }
 
 .history-message {
