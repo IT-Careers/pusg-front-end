@@ -1,0 +1,39 @@
+.history-and-participants {
+    width: 100%;
+    height: 100vh;
+}
+
+.history {
+    border: 1px solid black;
+    min-height: 95%;
+}
+
+.participants {
+    border: 1px solid black;
+}
+
+.chat-input-field {
+    border: 1px solid black;
+    width: 100%;
+    height: 5%;
+}
+
+.chat-input-field input {
+    height: 100%;
+}
+
+.w-85 {
+    width: 85%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-15 {
+    width: 15%;
+}

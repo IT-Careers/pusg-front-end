@@ -1,0 +1,11 @@
+.app-container {
+    width: 100vw;
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-stage {
+    border: 3px solid skyblue;
+}
