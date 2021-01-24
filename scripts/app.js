@@ -19,6 +19,8 @@ const handleRouting = () => {
                 const compliedTemplate = app.htmlService.createElement(template);
 
                 app.htmlService.attachElement(compliedTemplate, 'body');
+
+                app.Game.init();
             });
 
             break;
