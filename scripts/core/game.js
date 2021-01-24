@@ -66,11 +66,11 @@ class Game {
     }
 
     update() {
-        this.gameObjects.forEach(gameObject => gameObject.update());
+        // this.gameObjects.forEach(gameObject => gameObject.update());
     }
 
     draw() {
-        this.gameObjects.forEach(gameObject => gameObject.draw());
+        // this.gameObjects.forEach(gameObject => gameObject.draw());
     }
 
     init() {
@@ -90,15 +90,18 @@ class Game {
 
         this.pixiApplication = new PIXI.Application(appOptions);
         this.pixiApplication.renderer.autoResize = true;
-        this.appStage = app.htmlService.getElement('.app-stage');
-        this.appStage.appendChild(this.pixiApplication.view);
 
-        this.loadSounds();
+        this.loadSounds(() => {});
         this.loadSprites(this.draw);
 
         this.pixiApplication.ticker.add((delta) => {
-            update();
+            this.update();
         });
+    }
+
+    load() {
+        this.appStage = app.htmlService.getElement('.app-stage');
+        this.appStage.appendChild(this.pixiApplication.view);
     }
 }
 

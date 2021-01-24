@@ -11,6 +11,7 @@ const handleRouting = () => {
                 app.htmlService.clearElement('#app');
                 app.htmlService.attachElement(compliedTemplate, '#app');
 
+                app.Game.init();
                 app.Home.init();
             });
 
