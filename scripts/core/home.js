@@ -21,7 +21,7 @@ const supportedCommands = {
     },
     '-pew': {
         invoke: () => {
-            app.config.sounds.pew.play();
+            app.Game.config.sounds.pew.play();
         },
         help: 'Does a pew!',
     }
