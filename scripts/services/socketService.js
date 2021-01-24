@@ -8,7 +8,7 @@ class SocketService {
 
     async initConnection() {
         this.connection = await new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:44385/home")
+            .withUrl("https://pusg-api.herokuapp.com/home")
             .build();
     }
 
