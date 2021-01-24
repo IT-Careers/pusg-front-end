@@ -18,6 +18,16 @@ function dispatch(command) {
             app.config.sprites['basic-tank-blue'].y += 20;
             return true;
         }
+        case "rotate-left": {
+            app.config.sprites['basic-tank-blue'].rotation -= 0.5;
+            app.config.sprites['basic-tank-blue'].rotation -= 0.5;
+            return true;
+        }
+        case "rotate-right": {
+            app.config.sprites['basic-tank-blue'].rotation += 0.75;
+            app.config.sprites['basic-tank-blue'].rotation += 0.75;
+            return true;
+        }
         case "pew": {
             app.config.sounds.pew.play();
             return true;
@@ -28,7 +38,7 @@ function dispatch(command) {
     return false;
 }
 
-document.querySelector('#chat').addEventListener('keyup', function (e) {
+htmlService.addEventHandler('#chat', 'keyup', function (e) {
     if (e.key === 'Enter' || e.keyCode === 13) {
         const command = e.target.value;
 

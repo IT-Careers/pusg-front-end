@@ -657,8 +657,8 @@ soundEffect
 The `soundEffect` function let's you generate your sounds and musical notes from scratch
 (Reverb effect requires the `impulseResponse` function that you'll see further ahead in this file)
 
-To create a custom sound effect, define all the parameters that characterize your sound. Here's how to
-create a laser shooting sound:
+To createElement a custom sound effect, define all the parameters that characterize your sound. Here's how to
+createElement a laser shooting sound:
 
     soundEffect(
       1046.5,           //frequency
@@ -677,7 +677,7 @@ create a laser shooting sound:
       3                 //Maximum duration of sound, in seconds
     );
 
-Experiment by changing these parameters to see what kinds of effects you can create, and build
+Experiment by changing these parameters to see what kinds of effects you can createElement, and build
 your own library of custom sound effects for games.
 */
 
@@ -938,7 +938,7 @@ function soundEffect(
 impulseResponse
 ---------------
 
-The `makeSound` and `soundEffect` functions uses `impulseResponse`  to help create an optional reverb effect.
+The `makeSound` and `soundEffect` functions uses `impulseResponse`  to help createElement an optional reverb effect.
 It simulates a model of sound reverberation in an acoustic space which
 a convolver node can blend with the source sound. Make sure to include this function along with `makeSound`
 and `soundEffect` if you need to use the reverb feature.

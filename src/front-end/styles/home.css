@@ -8,6 +8,15 @@
     min-height: 95%;
 }
 
+.history-messages {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.history-message {
+    padding: 0 10px 0 10px;
+    margin: 5px 0 5px 0;
+}
+
 .participants {
     border: 1px solid black;
 }
