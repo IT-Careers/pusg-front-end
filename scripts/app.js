@@ -1,5 +1,20 @@
 var app = app || {};
 
+const gameEvents = (() => {
+    app.eventService.addEventHandler('GameEnd', (result) => {
+        if(result) {
+            const message = result.result;
+            const user = 'PUSG';
+
+            app.socketService.send('home', 'SendMessage', user, message);
+        }
+
+        app.Game.reset();
+        app.socketService.disconnectGame();
+        window.location.hash = '#/home';
+    });
+})();
+
 const handleRouting = () => {
     const path = window.location.hash.substr(window.location.hash.indexOf('#') + 1);
 
@@ -11,7 +26,7 @@ const handleRouting = () => {
                 app.htmlService.clearElement('#app');
                 app.htmlService.attachElement(compliedTemplate, '#app');
 
-                app.Game.init();
+                app.socketService.initHome();
                 app.Home.init();
             });
 
@@ -24,6 +39,7 @@ const handleRouting = () => {
                 app.htmlService.attachElement(compliedTemplate, '#app');
 
                 app.Game.init();
+                app.Game.load(app.config.USER.COLOR);
             });
 
             break;

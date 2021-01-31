@@ -1,31 +1,19 @@
 var app = app || {};
 
-class TankShell {
-    constructor(sprite, position, direction) {
-        this.sprite = sprite;
-        this.sprite.x = position.x;
-        this.sprite.y = position.y;
+class TankShell extends BaseGameObject {
+    constructor(id, sprite, size, position, direction) {
+        super(id, sprite, size, position);
         this.direction = direction;
+        this.isDestroyed = false;
     }
 
-    update() {
-        switch(this.direction) {
-            case "up":
-                this.sprite.y--;
-                break;
-            case "right":
-                this.sprite.x++;
-                break;
-            case "down":
-                this.sprite.y++;
-                break;
-            case "left":
-                this.sprite.x--;
-                break;
-        }
+    set x (value) {
+        this.container.x = value;
     }
 
-    draw() {
-        app.pixiApplication.stage.addChild(this.sprite);
+    set y (value) {
+        this.container.y = value;
     }
+
+    update() {}
 }

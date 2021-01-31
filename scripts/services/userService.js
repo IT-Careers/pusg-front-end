@@ -10,7 +10,7 @@ class UserService {
             const username = prompt('Please, enter a Username:');
 
             if (username) {
-                app.socketService.send('Login', username);
+                app.socketService.send('home', 'Login', username);
                 this.user = username;
             }
         }

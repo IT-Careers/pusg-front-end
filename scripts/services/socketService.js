@@ -2,22 +2,83 @@ var app = app || {};
 
 class SocketService {
     constructor() {
-        this.connection = null;
-        this.init();
+        this.homeConnection = null;
+        this.gameConnection = null;
     }
 
-    async initConnection() {
-        this.connection = await new signalR.HubConnectionBuilder()
-            .withUrl("https://pusg-api.herokuapp.com/home")
+    async initGameConnection() {
+        this.gameConnection = await new signalR.HubConnectionBuilder()
+            .withUrl(`${app.config.SERVICE_URL}/game`)
             .build();
     }
 
-    initReceivers() {
-        this.connection.on('OnConnected', ([message]) => {
+    disconnectGame() {
+        this.gameConnection.stop();
+        this.gameConnection = null;
+    }
+
+    initGameReceivers() {
+        this.gameConnection.on('OnConnected', ([message]) => {
             console.log(message);
         });
 
-        this.connection.on('ReceiveMessage', ([user, message]) => {
+        this.gameConnection.on('StartGame', ([color]) => {
+            window.location.hash = '#/play';
+            app.config.USER.COLOR = color;
+        });
+
+        this.gameConnection.on('OtherUp', () => {
+            app.eventService.triggerEvent('OtherUp');
+        });
+
+        this.gameConnection.on('OtherRight', () => {
+            app.eventService.triggerEvent('OtherRight');
+        });
+
+        this.gameConnection.on('OtherDown', () => {
+            app.eventService.triggerEvent('OtherDown');
+        });
+
+        this.gameConnection.on('OtherLeft', () => {
+            app.eventService.triggerEvent('OtherLeft');
+        });
+
+        this.gameConnection.on('OtherRotateLeft', () => {
+            app.eventService.triggerEvent('OtherRotateLeft');
+        });
+
+        this.gameConnection.on('OtherRotateRight', () => {
+            app.eventService.triggerEvent('OtherRotateRight');
+        });
+
+        this.gameConnection.on('GameState', (state) => {
+            app.eventService.triggerEvent('GameState', state);
+        });
+
+        this.gameConnection.on('GameEnd', (result) => {
+            app.eventService.triggerEvent('GameEnd', result);
+        });
+    }
+
+    initGame() {
+        return this.initGameConnection().then(() => {
+            this.initGameReceivers();
+            return this.start(this.gameConnection);
+        });
+    }
+
+    async initHomeConnection() {
+        this.homeConnection = await new signalR.HubConnectionBuilder()
+            .withUrl(`${app.config.SERVICE_URL}/home`)
+            .build();
+    }
+
+    initHomeReceivers() {
+        this.homeConnection.on('OnConnected', ([message]) => {
+            console.log(message);
+        });
+
+        this.homeConnection.on('ReceiveMessage', ([user, message]) => {
             const messageNode = app.htmlService
                 .getElementFromTemplate('message', {
                     user: user,
@@ -29,27 +90,28 @@ class SocketService {
         });
     }
 
-    init() {
-        this.initConnection().then(() => {
-            this.initReceivers();
-            this.start();
+    initHome() {
+        return this.initHomeConnection().then(() => {
+            this.initHomeReceivers();
+            return this.start(this.homeConnection);
         });
     }
 
-    start() {
+    start(connection) {
         const starting = async () => {
             try {
-                await this.connection.start();
+                await connection.start();
             } catch (e) {
                 console.log(e);
             }
         };
 
-        starting().then(() => {});
+        return starting().then(() => {});
     }
 
-    send(method, ...args) {
-        this.connection.invoke(method, ...args);
+    send(location, method, ...args) {
+        if(location === 'home') this.homeConnection.invoke(method, ...args);
+        if(location === 'game') this.gameConnection.invoke(method, ...args);
     }
 }
 

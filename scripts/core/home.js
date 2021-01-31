@@ -2,7 +2,11 @@ var app = app || {};
 
 const supportedCommands = {
     '-play': {
-        invoke: () => {},
+        invoke: () => {
+            app.socketService.initGame().finally(() => {
+                app.socketService.send('game', 'Login', app.userService.user);
+            });
+        },
         help: 'Initiate matchmaking to find an opponent and play the game.',
     },
     '-help': {
@@ -55,7 +59,7 @@ class Home {
                     if(this.isCommand(message)) {
                         this.dispatch(message);
                     } else {
-                        app.socketService.send('SendMessage', app.userService.user, message);
+                        app.socketService.send('home', 'SendMessage', app.userService.user, message);
                     }
                 }
             }
