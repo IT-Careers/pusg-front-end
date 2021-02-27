@@ -1,7 +1,8 @@
 var app = app || {};
 
 const elementTemplates = {
-    'message': '<li class="history-message">${user}: ${message}</li>'
+    'message': '<li class="history-message">${user}: ${message}</li>',
+    'user': '<h5 id="${user}" class="px-3 py-1">${user}</h5>',
 };
 
 const templates = {
@@ -45,7 +46,7 @@ class HtmlService {
 
     getElementFromTemplate(templateName, args) {
         return Object.keys(args).reduce((result, key) => {
-            return result.replace('${' + key + '}', args[key]);
+            return result.replaceAll('${' + key + '}', args[key]);
         }, this.elementTemplates[templateName]);
     }
 

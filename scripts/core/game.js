@@ -139,15 +139,15 @@ class Game {
         const currentTank = this.getCurrentPlayerTank();
         const otherTank = this.getOtherPlayerTank();
         if(currentTank && otherTank && this.playerColor === 'blue') {
-            currentTank.x = this.config.state.blue.x;
-            currentTank.y = this.config.state.blue.y;
-            otherTank.x = this.config.state.red.x;
-            otherTank.y = this.config.state.red.y;
+            currentTank.x = this.config.state.blue?.x;
+            currentTank.y = this.config.state.blue?.y;
+            otherTank.x = this.config.state.red?.x;
+            otherTank.y = this.config.state.red?.y;
         } else if(currentTank && otherTank && this.playerColor === 'red') {
-            currentTank.x = this.config.state.red.x;
-            currentTank.y = this.config.state.red.y;
-            otherTank.x = this.config.state.blue.x;
-            otherTank.y = this.config.state.blue.y;
+            currentTank.x = this.config.state.red?.x;
+            currentTank.y = this.config.state.red?.y;
+            otherTank.x = this.config.state.blue?.x;
+            otherTank.y = this.config.state.blue?.y;
         }
     }
 
