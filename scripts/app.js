@@ -1,17 +1,18 @@
 var app = app || {};
 
-const gameEvents = (() => {
+const globalEvents = (() => {
+    app.eventService.addEventHandler('GameStart', (color) => {
+        app.socketService.disconnectHome();
+        app.config.USER.COLOR = color;
+        window.location.hash = '#/play';
+    });
+
     app.eventService.addEventHandler('GameEnd', (result) => {
-        if(result) {
-            const message = result.result;
-            const user = 'PUSG';
-
-            app.socketService.send('home', 'SendMessage', user, message);
+        if(app.Game.isRunning) {
+            app.Game.reset();
+            app.socketService.disconnectGame();
+            window.location.hash = '#/home';
         }
-
-        app.Game.reset();
-        app.socketService.disconnectGame();
-        window.location.hash = '#/home';
     });
 })();
 
@@ -26,8 +27,10 @@ const handleRouting = () => {
                 app.htmlService.clearElement('#app');
                 app.htmlService.attachElement(compliedTemplate, '#app');
 
-                app.socketService.initHome();
-                app.Home.init();
+                app.socketService.initHome().then(() => {
+                    app.userService.refreshLogin();
+                    app.Home.init();
+                });
             });
 
             break;

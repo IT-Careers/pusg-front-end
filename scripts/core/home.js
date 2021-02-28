@@ -34,6 +34,7 @@ const supportedCommands = {
 class Home {
     constructor() {
         this.commands = supportedCommands;
+        this.cachedMessages = [];
     }
 
     isCommand(command) {
@@ -42,6 +43,44 @@ class Home {
 
     dispatch(command) {
         this.commands[command].invoke();
+    }
+
+    initEvents() {
+        app.eventService.addEventHandler('LoggedIn', () => {
+            app.htmlService.clearElement('.history-messages');
+        });
+
+        app.eventService.addEventHandler('OnLoggedIn', (users) => {
+            users.forEach(user => {
+                if(!app.htmlService.getElement(`#${user}`)) {
+                    const userNode = app.htmlService
+                        .getElementFromTemplate('user', {
+                            user: user,
+                        });
+
+                    app.htmlService.attachElement(app.htmlService.createElement(userNode), '.participants');
+                }
+            });
+        });
+
+        app.eventService.addEventHandler('OnLoggedOut', (users) => {
+            users.forEach(user => {
+                app.htmlService.getElement(`#${user}`).remove();
+            });
+        });
+
+        app.eventService.addEventHandler('OnReceiveMessage', ([user, message]) => {
+            const messageNode = app.htmlService
+                .getElementFromTemplate('message', {
+                    user: user,
+                    message: message
+                });
+
+            this.cachedMessages.push(messageNode);
+
+            app.htmlService.attachElement(app.htmlService.createElement(messageNode)
+                , '.history-messages');
+        });
     }
 
     init() {
@@ -64,6 +103,16 @@ class Home {
                 }
             }
         });
+
+        if(app.userService.isLoggedIn()) {
+            app.htmlService.clearElement('.history-messages');
+            this.cachedMessages.forEach(cachedMessage => {
+                app.htmlService.attachElement(app.htmlService.createElement(cachedMessage)
+                    , '.history-messages');
+            });
+        }
+
+        this.initEvents();
     }
 }
 

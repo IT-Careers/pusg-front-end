@@ -23,8 +23,7 @@ class SocketService {
         });
 
         this.gameConnection.on('StartGame', ([color]) => {
-            window.location.hash = '#/play';
-            app.config.USER.COLOR = color;
+            app.eventService.triggerEvent('GameStart', color)
         });
 
         this.gameConnection.on('OtherUp', () => {
@@ -73,39 +72,26 @@ class SocketService {
             .build();
     }
 
+    disconnectHome() {
+        this.homeConnection.stop();
+        this.homeConnection = null;
+    }
+
     initHomeReceivers() {
         this.homeConnection.on('OnConnected', ([message]) => {
             console.log(message);
         });
 
         this.homeConnection.on('OnLoggedIn', (users) => {
-            users.forEach(user => {
-                if(!app.htmlService.getElement(`#${user}`)) {
-                    const userNode = app.htmlService
-                        .getElementFromTemplate('user', {
-                            user: user,
-                        });
-
-                    app.htmlService.attachElement(app.htmlService.createElement(userNode), '.participants');
-                }
-            });
+            app.eventService.triggerEvent('OnLoggedIn', users);
         });
 
         this.homeConnection.on('OnLoggedOut', (users) => {
-            users.forEach(user => {
-                app.htmlService.getElement(`#${user}`).remove();
-            });
+            app.eventService.triggerEvent('OnLoggedOut', users);
         });
 
         this.homeConnection.on('ReceiveMessage', ([user, message]) => {
-            const messageNode = app.htmlService
-                .getElementFromTemplate('message', {
-                    user: user,
-                    message: message
-                });
-
-            app.htmlService.attachElement(app.htmlService.createElement(messageNode)
-                , '.history-messages');
+            app.eventService.triggerEvent('OnReceiveMessage', [user, message]);
         });
     }
 
@@ -130,6 +116,7 @@ class SocketService {
 
     send(location, method, ...args) {
         if(location === 'home') {
+            console.log(this.homeConnection);
             this.homeConnection?.invoke(method, ...args);
         }
         if(location === 'game') {

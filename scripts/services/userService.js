@@ -12,7 +12,15 @@ class UserService {
             if (username) {
                 app.socketService.send('home', 'Login', username);
                 this.user = username;
+                app.eventService.triggerEvent('LoggedIn');
             }
+        }
+    }
+
+    refreshLogin() {
+        if(this.user) {
+            app.socketService.send('home', 'Login', this.user);
+            app.eventService.triggerEvent('LoggedIn');
         }
     }
 
